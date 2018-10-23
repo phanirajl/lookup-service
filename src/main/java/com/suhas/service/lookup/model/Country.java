@@ -21,4 +21,36 @@ public class Country implements Serializable {
 
     @Column("country_name_en")
     private String countryNameEn;
+
+    public Long getCountryID() {
+        return countryID;
+    }
+
+    public void setCountryID(Long countryID) {
+        this.countryID = countryID;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getCountryNameAr() {
+        return countryNameAr;
+    }
+
+    public void setCountryNameAr(String countryNameAr) {
+        this.countryNameAr = countryNameAr;
+    }
+
+    public String getCountryNameEn() {
+        return countryNameEn;
+    }
+
+    public void setCountryNameEn(String countryNameEn) {
+        this.countryNameEn = countryNameEn;
+    }
 }
