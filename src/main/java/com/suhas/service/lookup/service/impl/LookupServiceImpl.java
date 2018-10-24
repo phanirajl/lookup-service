@@ -8,7 +8,10 @@ import com.suhas.service.lookup.utils.CommonUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -48,6 +51,25 @@ public class LookupServiceImpl implements LookupService {
             });
         }
         return countryDTOList;
+    }
+
+    /**
+     * @CachePut — always lets the method execute.
+     * It is used to update the cache with the result of the method execution
+     * @param countryDetails
+     */
+    @Override
+    @CachePut(cacheNames = "countryCache")
+    public void createCountry(Country countryDetails) {
+        countryRepository.save(countryDetails);
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    @Cacheable
+    public void deleteCountry(Long countryId) {
+        Country country = countryRepository.findOne(BasicMapId.id("countryID",countryId));
+        countryRepository.delete(country);
     }
 
     private void simulateSlowService() {
