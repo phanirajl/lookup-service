@@ -13,6 +13,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -60,6 +62,7 @@ public class LookupServiceImpl implements LookupService {
      */
     @Override
     @CachePut(cacheNames = "countryCache")
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void createCountry(Country countryDetails) {
         countryRepository.save(countryDetails);
     }
