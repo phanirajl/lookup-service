@@ -10,3 +10,5 @@ public class LookupServiceApplication {
 		SpringApplication.run(LookupServiceApplication.class, args);
 	}
 }
+
+
