@@ -1,6 +1,7 @@
 package com.suhas.service.lookup.service.impl;
 
 import com.suhas.service.lookup.dto.CountryDTO;
+import com.suhas.service.lookup.exception.ResourceNotFoundException;
 import com.suhas.service.lookup.model.Country;
 import com.suhas.service.lookup.repository.CountryRepository;
 import com.suhas.service.lookup.service.LookupService;
@@ -11,7 +12,6 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.cassandra.repository.support.BasicMapId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,7 +71,8 @@ public class LookupServiceImpl implements LookupService {
     @CacheEvict(allEntries = true)
     @Cacheable
     public void deleteCountry(Long countryId) {
-        Country country = countryRepository.findOne(BasicMapId.id("countryID",countryId));
+        Country country = countryRepository.findById(countryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Country", "id", countryId));
         countryRepository.delete(country);
     }
 
